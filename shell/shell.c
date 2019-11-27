@@ -9,7 +9,7 @@ char *cmdline;
 char **args;
 int exit;
 do {
-printf("#SYshell$ ");
+_puts("#SYshell$ ");
 cmdline = readline();
 args = splitline(cmdline, LINE_DELIM);
 exit = execute(args);
