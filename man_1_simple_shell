@@ -1,83 +1,70 @@
-.\" Manpage for simple_shell.
-.\" Contact yosrig1997@gmail.com OR salmen.zooro@gmail.com to correct errors or typos.
-.TH man 1 "27 Novembre 2019" "1.0" "simple_shell man page"
+.\" Manpage for Simple Shell.
+.\" Contact timothy.britton@holbertonschool.com or richard.sim@holbertonschool to correct errors or typos.
+.TH man 1 "Dec 19 2016" "1.0" "Simple Shell Man Page"
 .SH NAME
-simple_shell \- simple command interpreter "SASH"
+simple_shell - simple_shell is an sh-compatible command language interpreter that executes commands from the stand input or from a file.
 .SH SYNOPSIS
-#include "shell.h"
-simple_shell [USERNAME]
+simple_shell [command_string | file]
+
 .SH DESCRIPTION
-simple_shell :
-Is a command interpretor. It's a program that executes other programs.
-It provides a computer user an interface so that the user can run different
-commands or utilities/tools with some input data.
-.SH OVERVIEW
-When the simple_shell has finished executing a program, it sends an output
-to the user on the screen, which is the standard output device.
-For this reason, it is referred to as the “command interpretor”.
-.SS Invocation
-The shell will reads commands from a user input. When the shell is in interactive mode,
-it displays a prompt and runs a process after the user types new command.
-After the process terminates, the prompt will display again on the next line and the user can begin another process.
-When the shell is running a script it's said to be in non-interactive mode.
-That said, the user can emulate interactive mode by running a script that takes input from a user.
-Simple_shell "sash" runs in both interactive and non-interactive modes.
-.SS Example N°1
-.br
-help
-Output: display all command can use in the Simple_shell
-.br
-.SS Example N°2
-.br
-ls
-.br
-Output: display all files in users current directory
-.SS Example N°3
-.br
-exit
-.br
-Output: terminate processes and exit Simple_shell
-.br
-.SS Commands
-Essentially though, a line is read and the first word  of the line is processed.
-The input will either be processed as an executable, a built-in function, or an error message will be sent to stdout.
-.br
-.SS Path Search
-When locating a command, the simple_shell first looks to see if it has a built-in function by that name.
-It does this by searching for a builtin command by that name. If no built-in is found,
-simple_shell searches through each directory provided in the users PATH variable. If no executable is found,
-an error message is printed and the user is prompted to enter another command.
-.br
+simple_shell is an sh-compatible command language interpreter that executes commands read from the standard input or from a file.h.
+
+simple_shell is intended to be a conformant implementation of the Shell and Utilities portion of the IEEE POSIX specification (IEEE Standard 1003.1). simple_shell can be configured to be POSIX-conformant by default.
+.SS Overview
+The simple_shell is a command that reads lines from either a file or the terminal, interprets them, and generally executes other commands.  It is the program that is running when the user runs gcc -Wall -Werror -Wextra -pedantic *.c -o hsh and runs the executable file, ./hsh. The simple_shell implements a language that has flow control constructs, a macro facility that provides a variety of features in addition to data storage, along with built in history and line editing capabilities.  It incorporates many features to aid interactive use and has the advantage that the interpretative language is common to both interactive and non-interactive use (shell scripts).  That is, commands can be typed directly to the running shell or can be put into a file and the file can be executed directly by the shell.
+
+.SS Aliases
+ An alias is a name and corresponding value set using the alias(1) builtin command.  Whenever a reserved word may occur (see above), and after checking for reserved words, the shell checks the word to see if it matches an alias.  If it does, it replaces it in the input stream with its value.  For example, if there is an alias called “lf” with the value “ls -F”, thenthe input:
+
+      lf foobar ⟨return⟩
+
+would become
+
+      ls -F foobar ⟨return⟩
+
+Aliases provide a convenient way for naive users to create shorthands for commands without having to learn how to create functions with arguments.  They can also be used to create lexically obscure code. This use is discouraged.
+
+
+.SS Simple Commands
+ If a simple command has been recognized, the shell performs the following actions:
+
+ 1.   Leading words of the form “name=value” are stripped off and assigned to the environment of the simple command.  Redirection operators and their arguments (as described below) are stripped off and saved for processing.
+
+ 2.   The remaining words are expanded as described in the section called “Expansions”, and the first remaining word is considered the command name and the command is located.  The remaining words are considered the arguments of the command.  If no command name resulted, then the “name=value” variable assignments recognized in item 1 affect the current shell.
+
+
 .SS Builtins
 This section lists the builtin commands which are builtin because they need to perform some operation that can't be performed by a separate process.
-.br
-cd [directory]
-.br
-Switch to the specified directory.
-.br
-exit
-.br
-Leave current shell process.
-.br
-help
-.br
-Display all the command can be used.
-.br
-setenv
-.br
-Initialize a new environment variable, or modify an existing one.
-.br
-unsetenv
-.br
-Remove an environment variable.
-.br
-env
-.br
-Display your current environment.
-.br
+
+.B alias [name[=string ...]]
+If name=string is specified, the shell defines the alias name with value string.  If just name is specified, the value of the alias name is printed.  With no arguments, the alias builtin prints the names and values of all defined aliases (see unalias).
+
+.B cd [-LP] [directory]
+Switch to the specified directory (default HOME).  If an entry for CDPATH appears in the environment of the cd command or the shell variable CDPATH is set and the directory name does not begin with a slash, then the directories listed in CDPATH will be searched for the specified directory.  The format of CDPATH is the same as that of PATH.  If a single dash is specified as the argument, it will be replaced by the value of OLDPWD.  The cd command will print out the name of the directory that it actually switched to if this is different from the name that the user gave.  These may be different either because the CDPATH mechanism was used or because the argument is a single dash.  The -P option causes the physical directory structure to be used, that is, all symbolic links are resolved to their respective values.  The -L option turns off the effect of any preceding -P options.
+
+
+.B env  [-] [NAME=VALUE]... [COMMAND [ARG]...]
+Prints out the current environment.
+
+.B exit [exitstatus]
+Terminate the shell process.  If exitstatus is given it is used as the exit status of the shell; otherwise the exit status of the preceding command is used.
+
+.B help [PATTERN ...]
+Display information about builtin commands.
+
+.B history
+Display the history list with line numbers.
+
+.B setenv [VARIABLE] [VALUE]
+The setenv() built-in adds the variable name to the environment with the value value, if name does not already exist. If name does exist in the environment, then its value is changed to value if overwrite is nonzero; if overwrite is zero, then the value of name is not changed. This function makes copies of the strings pointed to by name and value.
+
+.B unsetenv [VARIABLE]
+The unsetenv() built-in deletes the variable name from the environment. If name does not exist in the environment, then the functionsucceeds, and the environment is unchanged.
+
+.B unalias [-a] [name]
+If name is specified, the shell removes that alias.  If -a is specified, all aliases are removed.
+
 .SH BUGS
 No known bugs.
-.br
-This page was produced in collaboration Salmen & Yosri in Holberton school. A full description of the project can be found in "README.md".
 .SH AUTHOR
-Yosri Ghorbel (yosrig1997@gmail.com) && Salmen Zouari (salmen.zooro@gmail.com)
+(Timothy Britton) timothy.britton@holbertonschool.com and (Richard Sim) richard.sim@holbertonschool.com
