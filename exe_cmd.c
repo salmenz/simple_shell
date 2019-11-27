@@ -15,6 +15,7 @@ if (pid == 0)
 if (execve(args[0], args, environ) == -1)
 {
 perror(nom);
+fflush(stdout);
 }
 exit(EXIT_FAILURE);
 }

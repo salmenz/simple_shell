@@ -163,6 +163,10 @@ if (stat(cmd, &st) == 0)
 args[0] = cmd;
 break;
 }
+else if (stat(args[0], &st) == 0)
+{
+break;
+}
 }
 return (exe_cmd(args));
 }
