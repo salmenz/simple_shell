@@ -14,8 +14,7 @@ if (pid == 0)
 {
 if (execve(args[0], args, environ) == -1)
 {
-_puts(*args);
-_puts(": command not found.\n");
+perror(nom);
 }
 exit(EXIT_FAILURE);
 }
