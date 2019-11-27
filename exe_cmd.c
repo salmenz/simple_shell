@@ -13,7 +13,10 @@ pid = fork();
 if (pid == 0)
 {
 if (execve(args[0], args, environ) == -1)
-perror(nom);
+{
+_puts(*args);
+_puts(": command not found.\n");
+}
 exit(EXIT_FAILURE);
 }
 else if (pid < 0)
