@@ -34,7 +34,6 @@ int i;
 for (i = 0; environ[i]; i++)
 {
 _puts(environ[i]);
-_putchar('\n');
 }
 return (1);
 }
@@ -60,7 +59,6 @@ int i;
 for (i = 0; i < 5; i++)
 {
 _puts(builtins[i].str);
-_putchar('\n');
 }
 return (1);
 }
