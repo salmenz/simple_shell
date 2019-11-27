@@ -22,7 +22,6 @@ signal(SIGINT, sigintHandler);
 c = getchar();
 if (c == EOF)
 {
-_putchar('\n');
 exit(0);
 }
 else if (c == '\n')
