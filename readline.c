@@ -6,13 +6,14 @@
  */
 char *readline(void)
 {
+char *nom = getenv("_");
 int bufsize = BUFSIZE;
 int idx = 0;
 char *buff = malloc(sizeof(char) * bufsize);
 int c;
 if (!buff)
 {
-perror("ysh");
+perror(nom);
 exit(EXIT_FAILURE);
 }
 while (1)
@@ -40,7 +41,7 @@ bufsize += BUFSIZE;
 buff = realloc(buff, bufsize);
 if (!buff)
 {
-perror("ysh");
+perror(nom);
 exit(EXIT_FAILURE);
 }
 }

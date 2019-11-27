@@ -13,12 +13,13 @@ static builtin_t builtins[] = {
  */
 int builtin_cd(char **args __attribute__((unused)))
 {
+char *nom = getenv("_");
 if (args[1] == NULL)
-perror("ysh");
+perror(nom);
 else
 {
 if (chdir(args[1]) != 0)
-perror("ysh");
+perror(nom);
 }
 return (1);
 }
@@ -56,7 +57,6 @@ return (0);
 int builtin_help(char **args __attribute__((unused)))
 {
 int i;
-puts("yshell\n");
 for (i = 0; i < 5; i++)
 {
 _puts(builtins[i].str);
