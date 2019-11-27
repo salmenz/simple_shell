@@ -13,6 +13,8 @@ _puts("#SYshell$ ");
 cmdline = readline();
 args = splitline(cmdline, LINE_DELIM);
 exit = execute(args);
+free(cmdline);
+free(args);
 } while (exit);
 return (EXIT_SUCCESS);
 }
